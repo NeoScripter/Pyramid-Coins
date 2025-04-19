@@ -49,7 +49,7 @@ export default function Coin({
         const rect = (
             e.currentTarget as HTMLDivElement
         ).getBoundingClientRect();
-        animateCoinFlight(rect.top, rect.left, assignValue());
+        animateCoinFlight(rect.top + 22, rect.left + 22, assignValue());
         blockAnimation();
     }
     return (
@@ -57,7 +57,7 @@ export default function Coin({
             onClick={handleClick}
             className={cc(
                 'group perspective size-18 transition-scale duration-250 ease-in',
-                canAnimate && 'hover:scale-160 hover:z-20 not-hover:z-10'
+                canAnimate && shouldFlip === false && 'hover:scale-160 hover:z-20 not-hover:z-10'
             )}
         >
             <div
@@ -79,10 +79,10 @@ export default function Coin({
                     className="absolute inset-0 h-full w-full backface-hidden flex items-center justify-center font-coins font-black text-shadow-xl bg-cover bg-center bg-no-repeat text-[28px] pb-1 rounded-full"
                     style={{ backgroundImage: `url(${Bg})` }}
                 >
-                    <span className="text-[28px] text-gradient z-10 backface-hidden">
+                    <span className="text-[28px] select-none text-gradient z-10 backface-hidden">
                         {digit}
                     </span>
-                    <span className="absolute text-[28px] digit-text backface-hidden">
+                    <span className="absolute text-[28px] select-none digit-text backface-hidden">
                         {digit}
                     </span>
                 </div>

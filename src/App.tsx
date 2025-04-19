@@ -13,16 +13,26 @@ function App() {
     const [openScroll, setOpenScroll] = useState(false);
     const [flipAll, setFlipAll] = useState(false);
     const [canAnimate, setCanAnimate] = useState(true);
-
     const selectedCoinRef = useRef<HTMLDivElement>(null);
-
     const [animatedCoinPosition, setAnimatedCoinPosition] =
         useState<CoinCopyProps | null>(null);
+    const [resetCount, setResetCount] = useState(0);
+
+    function reset() {
+        setOpenScroll(false);
+        setFlipAll(false);
+        setAnimatedCoinPosition(null);
+
+        setTimeout(() => {
+            setResetCount(prev => prev + 1)
+            setCanAnimate(true);
+        }, 500)
+    }
 
     const rows = useMemo(() => {
         const coins = generateCoins();
         return generateCoinRows(coins);
-    }, [flipAll]);
+    }, [resetCount]);
 
     function animateCoinFlight(
         startTop: number,
@@ -48,7 +58,14 @@ function App() {
                 image,
                 shouldExpand: true,
             });
+
+            setFlipAll(true);
+            setOpenScroll(true);
         }, 500);
+
+        setTimeout(() => {
+            reset();
+        }, 8000)
     }
 
     return (
