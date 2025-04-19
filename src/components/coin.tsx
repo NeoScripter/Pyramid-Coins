@@ -1,8 +1,10 @@
 import Bg from '@/assets/images/coin-bg.webp';
 
-export default function Coin() {
-    const digit = 23;
+type CoinProps = {
+    digit: number;
+};
 
+export default function Coin({ digit }: CoinProps) {
     return (
         <div
             className="w-18 relative font-coins leading-normal flex items-center justify-center font-black text-shadow-xl aspect-square bg-cover bg-center bg-no-repeat pb-1"
