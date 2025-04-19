@@ -76,13 +76,13 @@ export default function Coin({
                 </div>
                 {/* Front Face */}
                 <div
-                    className="absolute inset-0 h-full w-full backface-hidden flex items-center justify-center font-coins font-black text-shadow-xl bg-cover bg-center bg-no-repeat text-[28px] pb-1 rounded-full"
+                    className={cc("absolute inset-0 h-full w-full backface-hidden flex items-center justify-center font-coins font-black text-shadow-xl bg-cover bg-center bg-no-repeat text-[28px] pb-1 rounded-full")}
                     style={{ backgroundImage: `url(${Bg})` }}
                 >
-                    <span className="text-[28px] select-none text-gradient z-10 backface-hidden">
+                    <span className={cc("text-[28px] select-none text-gradient z-10 backface-hidden transition-opacity duration-250 ease-in-out", (shouldFlip || flipAll) && 'opacity-0')}>
                         {digit}
                     </span>
-                    <span className="absolute text-[28px] select-none digit-text backface-hidden">
+                    <span className={cc("absolute text-[28px] select-none digit-text backface-hidden transition-opacity duration-250 ease-in-out", (shouldFlip || flipAll) && 'opacity-0')}>
                         {digit}
                     </span>
                 </div>
