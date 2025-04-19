@@ -10,7 +10,7 @@ export type CoinCopyProps = {
 export default function CoinCopy({ top, left, shouldExpand, image }: CoinCopyProps) {
     return (
         <div
-            className={cc("fixed size-18 rounded-full z-50 transition-all duration-1000 ease-in-out", shouldExpand && 'size-62.75')}
+            className={cc("fixed size-18 rounded-full z-50 transition-all duration-1000 ease-in-out opacity-0", shouldExpand && 'size-62.75 opacity-100')}
             style={{
                 top: `${top}px`,
                 left: `${left}px`,
