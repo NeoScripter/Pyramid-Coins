@@ -5,30 +5,14 @@ import Scroll from '@/components/scroll';
 import { useState } from 'react';
 import Coin from '@/components/coin';
 import Row from '@/components/row';
-import { range } from '@/utils/range';
 import { generateCoins } from '@/utils/generate-coins';
-import { CoinData } from '@/types/coins';
+import { generateCoinRows } from '@/utils/generate-rows';
 
 function App() {
     const [openScroll, setOpenScroll] = useState(true);
 
     const coins = generateCoins();
-
-    const rows: CoinData[][] = [];
-    let currentIndex = 0;
-    let rowSize = 1;
-
-    while (currentIndex < coins.length) {
-        const endIndex = currentIndex + rowSize;
-        const row = coins.slice(currentIndex, endIndex).map((value, i) => ({
-            digit: currentIndex + i + 1,
-            value,
-        }));
-
-        rows.push(row);
-        currentIndex = endIndex;
-        rowSize++;
-    }
+    const rows = generateCoinRows(coins);
 
     return (
         <main
@@ -40,12 +24,19 @@ function App() {
                     {rows.map((row, rowIndex) => (
                         <Row key={rowIndex}>
                             {row.map((coinData) => (
-                                <Coin key={coinData.digit} digit={coinData.digit} />
+                                <Coin
+                                    key={coinData.digit}
+                                    digit={coinData.digit}
+                                    value={coinData.value}
+                                />
                             ))}
                         </Row>
                     ))}
                 </div>
                 <div className="shrink-0">
+                    <div>
+                        <div className="size-62.75 relative top-16 mx-auto aspect-square rounded-full bg-white"></div>
+                    </div>
                     <Scroll isOpen={openScroll} />
                 </div>
             </div>

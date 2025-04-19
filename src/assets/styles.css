@@ -17,15 +17,18 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-
-  
 }
 
 .digit-text {
     background-clip: text;
     color: transparent;
-    text-shadow:
-    1px 1px 5px #d18400,   
-    1px 1px 5px #d18400,   
-    1px -1px 5px #a36b00;
+    text-shadow: 1px 1px 5px #d18400, 1px 1px 5px #d18400, 1px -1px 5px #a36b00;
+}
+
+.perspective {
+    perspective: 1000px;
+}
+
+.preserve-3d {
+    transform-style: preserve-3d;
 }
