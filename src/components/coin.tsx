@@ -3,16 +3,33 @@ import { CoinType } from '@/types/coins';
 import goldenCoin from '@/assets/images/golden.webp';
 import silverCoin from '@/assets/images/silver.webp';
 import bronzeCoin from '@/assets/images/bronze.webp';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cc } from '@/utils/cc';
 
 type CoinProps = {
     value: CoinType;
     digit: number;
+    flipAll: boolean;
+    animateCoinFlight: (left: number, top: number, image: string) => void;
+    canAnimate: boolean;
+    blockAnimation: () => void;
 };
 
-export default function Coin({ digit, value }: CoinProps) {
+export default function Coin({
+    digit,
+    value,
+    flipAll,
+    animateCoinFlight,
+    canAnimate,
+    blockAnimation,
+}: CoinProps) {
     const [shouldFlip, setShouldFlip] = useState(false);
+
+    useEffect(() => {
+        if (flipAll === true) {
+            setShouldFlip(false);
+        }
+    }, [flipAll]);
 
     const assignValue = () => {
         switch (value) {
@@ -24,12 +41,29 @@ export default function Coin({ digit, value }: CoinProps) {
                 return bronzeCoin;
         }
     };
+
+    function handleClick(e: React.MouseEvent<HTMLDivElement>) {
+        if (canAnimate === false) return;
+
+        setShouldFlip((o) => !o);
+        const rect = (
+            e.currentTarget as HTMLDivElement
+        ).getBoundingClientRect();
+        animateCoinFlight(rect.top, rect.left, assignValue());
+        blockAnimation();
+    }
     return (
-        <div onClick={() => setShouldFlip(o => !o)} className="group perspective size-18 transition-scale duration-250 ease-in hover:scale-160 hover:z-20 not-hover:z-10">
+        <div
+            onClick={handleClick}
+            className={cc(
+                'group perspective size-18 transition-scale duration-250 ease-in',
+                canAnimate && 'hover:scale-160 hover:z-20 not-hover:z-10'
+            )}
+        >
             <div
                 className={cc(
-                    'relative w-full h-full transition-transform duration-700 preserve-3d cursor-pointer',
-                    shouldFlip ? 'rotate-y-180' : 'rotate-y-360'
+                    'relative w-full h-full transition-transform duration-700 preserve-3d',
+                    (shouldFlip || flipAll) ? 'rotate-y-180' : 'rotate-y-360', canAnimate && 'cursor-pointer'
                 )}
             >
                 {/* Back Face */}

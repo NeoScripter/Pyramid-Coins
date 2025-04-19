@@ -2,17 +2,54 @@ import '@/assets/styles.css';
 import '@/assets/fonts/fonts.css';
 import background from '@/assets/images/background.webp';
 import Scroll from '@/components/scroll';
-import { useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import Coin from '@/components/coin';
 import Row from '@/components/row';
 import { generateCoins } from '@/utils/generate-coins';
 import { generateCoinRows } from '@/utils/generate-rows';
+import CoinCopy, { CoinCopyProps } from '@/components/coin-copy';
 
 function App() {
-    const [openScroll, setOpenScroll] = useState(true);
+    const [openScroll, setOpenScroll] = useState(false);
+    const [flipAll, setFlipAll] = useState(false);
+    const [canAnimate, setCanAnimate] = useState(true);
 
-    const coins = generateCoins();
-    const rows = generateCoinRows(coins);
+    const selectedCoinRef = useRef<HTMLDivElement>(null);
+
+    const [animatedCoinPosition, setAnimatedCoinPosition] =
+        useState<CoinCopyProps | null>(null);
+
+    const rows = useMemo(() => {
+        const coins = generateCoins();
+        return generateCoinRows(coins);
+    }, [flipAll]);
+
+    function animateCoinFlight(
+        startTop: number,
+        startLeft: number,
+        image: string
+    ) {
+        setAnimatedCoinPosition({
+            top: startTop,
+            left: startLeft,
+            image,
+            shouldExpand: false,
+        });
+
+        setTimeout(() => {
+            const target = selectedCoinRef?.current;
+            if (!target) return;
+
+            const { top, left } = target.getBoundingClientRect();
+
+            setAnimatedCoinPosition({
+                top,
+                left,
+                image,
+                shouldExpand: true,
+            });
+        }, 500);
+    }
 
     return (
         <main
@@ -28,6 +65,10 @@ function App() {
                                     key={coinData.digit}
                                     digit={coinData.digit}
                                     value={coinData.value}
+                                    flipAll={flipAll}
+                                    animateCoinFlight={animateCoinFlight}
+                                    canAnimate={canAnimate}
+                                    blockAnimation={() => setCanAnimate(false)}
                                 />
                             ))}
                         </Row>
@@ -35,11 +76,18 @@ function App() {
                 </div>
                 <div className="shrink-0">
                     <div>
-                        <div className="size-62.75 relative top-16 mx-auto aspect-square rounded-full bg-white"></div>
+                        <div
+                            ref={selectedCoinRef}
+                            className="size-62.75 relative top-16 mx-auto aspect-square rounded-full"
+                        ></div>
                     </div>
                     <Scroll isOpen={openScroll} />
                 </div>
             </div>
+
+            {animatedCoinPosition != null && (
+                <CoinCopy {...animatedCoinPosition} />
+            )}
         </main>
     );
 }
