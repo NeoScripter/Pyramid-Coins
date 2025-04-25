@@ -3,6 +3,8 @@ import leftBtn from '@/assets/images/entry/entry-btn-1.webp';
 import rightBtn from '@/assets/images/entry/entry-btn-2.webp';
 import leftBtnTitle from '@/assets/images/entry/btn-1-title.webp';
 import rightBtnTitle from '@/assets/images/entry/btn-2-title.webp';
+import { useState } from 'react';
+import { cc } from '@/utils/cc';
 
 type EntryProps = {
     handleRefClick: () => void;
@@ -12,14 +14,26 @@ export default function Entry({
     handleNoRefClick,
     handleRefClick,
 }: EntryProps) {
+    const [isAppearing, setIsAppearing] = useState(true);
+
+    function handleRef() {
+        setIsAppearing(false);
+        setTimeout(() => handleRefClick(), 500);
+    }
+
+    function handleNoRef() {
+        setIsAppearing(false);
+        setTimeout(() => handleNoRefClick(), 500);
+    }
+
     return (
         <main
-            className="h-202 mx-auto max-w-360 bg-center flex items-center justify-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23"
+            className={cc("h-202 mx-auto max-w-360 bg-center flex items-center justify-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23", isAppearing ? 'appear' : 'disappear')}
             style={{ backgroundImage: `url(${background})` }}
         >
             <div className="flex items-center justify-between w-300">
                 <button
-                    onClick={handleRefClick}
+                    onClick={handleRef}
                     className="w-118 h-42.25 flex items-center justify-center bg-no-repeat bg-contain cursor-pointer transition-scale duration-300 ease-in-out hover:scale-110"
                     style={{ backgroundImage: `url(${leftBtn})` }}
                 >
@@ -30,7 +44,7 @@ export default function Entry({
                     />
                 </button>
                 <button
-                    onClick={handleNoRefClick}
+                    onClick={handleNoRef}
                     className="w-118 h-42.25 flex items-center justify-center bg-no-repeat bg-contain cursor-pointer transition-scale duration-300 ease-in-out hover:scale-110"
                     style={{ backgroundImage: `url(${rightBtn})` }}
                 >

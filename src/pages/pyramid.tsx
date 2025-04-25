@@ -8,11 +8,12 @@ import { generateCoinRows } from '@/utils/generate-rows';
 import CoinCopy, { CoinCopyProps } from '@/components/coin-copy';
 import { useCoinPrizes } from '@/hooks/use-coin-prices';
 import { getRandomItem } from '@/utils/get-random-item';
+import { cc } from '@/utils/cc';
 
 type PyramidProps = {
     resetGame: () => void;
-}
-export default function Pyramid({resetGame}: PyramidProps) {
+};
+export default function Pyramid({ resetGame }: PyramidProps) {
     const [openScroll, setOpenScroll] = useState(false);
     const [flipAll, setFlipAll] = useState(false);
     const [canAnimate, setCanAnimate] = useState(true);
@@ -24,6 +25,7 @@ export default function Pyramid({resetGame}: PyramidProps) {
         'bronze' | 'golden' | 'silver' | null
     >();
     const { golden, silver, bronze } = useCoinPrizes();
+    const [isAppearing, setIsAppearing] = useState(true);
 
     function reset() {
         setOpenScroll(false);
@@ -51,7 +53,7 @@ export default function Pyramid({resetGame}: PyramidProps) {
             case 'bronze':
                 return getRandomItem(bronze);
         }
-    }, [winningCoin])
+    }, [winningCoin]);
 
     function animateCoinFlight(
         startTop: number,
@@ -77,13 +79,16 @@ export default function Pyramid({resetGame}: PyramidProps) {
                 image,
                 shouldExpand: true,
             });
-
         }, 500);
 
         setTimeout(() => {
             setFlipAll(true);
             setOpenScroll(true);
         }, 3500);
+
+        setTimeout(() => {
+            setIsAppearing(false);
+        }, 9500);
         setTimeout(() => {
             reset();
         }, 10000);
@@ -91,7 +96,10 @@ export default function Pyramid({resetGame}: PyramidProps) {
 
     return (
         <main
-            className="h-202 mx-auto max-w-360 bg-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23"
+            className={cc(
+                'h-202 mx-auto max-w-360 bg-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23',
+                isAppearing ? 'appear' : 'disappear'
+            )}
             style={{ backgroundImage: `url(${background})` }}
         >
             <div className="flex items-center justify-between h-full">
