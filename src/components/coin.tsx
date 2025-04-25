@@ -1,8 +1,8 @@
-import Bg from '@/assets/images/coin-bg.webp';
+import Bg from '@/assets/images/pyramid/coin-bg.webp';
 import { CoinType } from '@/types/coins';
-import goldenCoin from '@/assets/images/golden.webp';
-import silverCoin from '@/assets/images/silver.webp';
-import bronzeCoin from '@/assets/images/bronze.webp';
+import goldenCoin from '@/assets/images/pyramid/golden.webp';
+import silverCoin from '@/assets/images/pyramid/silver.webp';
+import bronzeCoin from '@/assets/images/pyramid/bronze.webp';
 import { useEffect, useState } from 'react';
 import { cc } from '@/utils/cc';
 
@@ -13,6 +13,7 @@ type CoinProps = {
     animateCoinFlight: (left: number, top: number, image: string) => void;
     canAnimate: boolean;
     blockAnimation: () => void;
+    assignCoin: () => void;
 };
 
 export default function Coin({
@@ -22,8 +23,15 @@ export default function Coin({
     animateCoinFlight,
     canAnimate,
     blockAnimation,
+    assignCoin,
 }: CoinProps) {
     const [shouldFlip, setShouldFlip] = useState(false);
+    const [shouldAnimate, setShouldAnimate] = useState(false);
+
+    function triggerAnimation() {
+        setShouldAnimate(true);
+        setTimeout(() => setShouldAnimate(false), 850);
+    }
 
     useEffect(() => {
         if (flipAll === true) {
@@ -45,6 +53,7 @@ export default function Coin({
     function handleClick(e: React.MouseEvent<HTMLDivElement>) {
         if (canAnimate === false) return;
 
+        assignCoin();
         setShouldFlip((o) => !o);
         const rect = (
             e.currentTarget as HTMLDivElement
@@ -55,15 +64,20 @@ export default function Coin({
     return (
         <div
             onClick={handleClick}
+            onMouseEnter={triggerAnimation}
             className={cc(
                 'group perspective size-18 transition-scale duration-250 ease-in',
-                canAnimate && shouldFlip === false && 'hover:scale-160 hover:z-20 not-hover:z-10'
+                canAnimate &&
+                    shouldFlip === false &&
+                    shouldAnimate &&
+                    'hover:z-20 not-hover:z-10 coin-hover'
             )}
         >
             <div
                 className={cc(
-                    'relative w-full h-full transition-transform duration-700 preserve-3d',
-                    (shouldFlip || flipAll) ? 'rotate-y-180' : 'rotate-y-360', canAnimate && 'cursor-pointer'
+                    'relative w-full h-full transition-transform duration-1250 preserve-3d',
+                    shouldFlip || flipAll ? 'rotate-y-180' : 'rotate-y-360',
+                    canAnimate && 'cursor-pointer'
                 )}
             >
                 {/* Back Face */}
@@ -76,13 +90,25 @@ export default function Coin({
                 </div>
                 {/* Front Face */}
                 <div
-                    className={cc("absolute inset-0 h-full w-full backface-hidden flex items-center justify-center font-coins font-black text-shadow-xl bg-cover bg-center bg-no-repeat text-[28px] pb-1 rounded-full")}
+                    className={cc(
+                        'absolute inset-0 h-full w-full backface-hidden flex items-center justify-center font-coins font-black text-shadow-xl bg-cover bg-center bg-no-repeat text-[28px] pb-1 rounded-full'
+                    )}
                     style={{ backgroundImage: `url(${Bg})` }}
                 >
-                    <span className={cc("text-[28px] select-none text-gradient z-10 backface-hidden transition-opacity duration-250 ease-in-out", (shouldFlip || flipAll) && 'opacity-0')}>
+                    <span
+                        className={cc(
+                            'text-[28px] select-none text-gradient z-10 backface-hidden transition-opacity duration-250 ease-in-out',
+                            (shouldFlip || flipAll) && 'opacity-0'
+                        )}
+                    >
                         {digit}
                     </span>
-                    <span className={cc("absolute text-[28px] select-none digit-text backface-hidden transition-opacity duration-250 ease-in-out", (shouldFlip || flipAll) && 'opacity-0')}>
+                    <span
+                        className={cc(
+                            'absolute text-[28px] select-none digit-text backface-hidden transition-opacity duration-250 ease-in-out',
+                            (shouldFlip || flipAll) && 'opacity-0'
+                        )}
+                    >
                         {digit}
                     </span>
                 </div>

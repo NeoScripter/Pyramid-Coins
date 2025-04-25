@@ -1,112 +1,23 @@
 import '@/assets/styles.css';
 import '@/assets/fonts/fonts.css';
-import background from '@/assets/images/background.webp';
-import Scroll from '@/components/scroll';
-import { useMemo, useRef, useState } from 'react';
-import Coin from '@/components/coin';
-import Row from '@/components/row';
-import { generateCoins } from '@/utils/generate-coins';
-import { generateCoinRows } from '@/utils/generate-rows';
-import CoinCopy, { CoinCopyProps } from '@/components/coin-copy';
+import Pyramid from '@/pages/pyramid';
+import { useState } from 'react';
+import Entry from '@/pages/entry';
+import Cards from '@/pages/cards';
+
+type Page = 'cards' | 'pyramid' | 'entry';
 
 function App() {
-    const [openScroll, setOpenScroll] = useState(false);
-    const [flipAll, setFlipAll] = useState(false);
-    const [canAnimate, setCanAnimate] = useState(true);
-    const selectedCoinRef = useRef<HTMLDivElement>(null);
-    const [animatedCoinPosition, setAnimatedCoinPosition] =
-        useState<CoinCopyProps | null>(null);
-    const [resetCount, setResetCount] = useState(0);
+    const [currentPage, setCurrentPage] = useState<Page>('entry');
 
-    function reset() {
-        setOpenScroll(false);
-        setFlipAll(false);
-        setAnimatedCoinPosition(null);
-
-        setTimeout(() => {
-            setResetCount(prev => prev + 1)
-            setCanAnimate(true);
-        }, 500)
+    switch (currentPage) {
+        case 'entry':
+            return <Entry handleNoRefClick={() => setCurrentPage('pyramid')} handleRefClick={() => setCurrentPage('cards')} />;
+        case 'pyramid':
+            return <Pyramid resetGame={() => setCurrentPage('entry')} />;
+        default:
+            return <Cards />;
     }
-
-    const rows = useMemo(() => {
-        const coins = generateCoins();
-        return generateCoinRows(coins);
-    }, [resetCount]);
-
-    function animateCoinFlight(
-        startTop: number,
-        startLeft: number,
-        image: string
-    ) {
-        setAnimatedCoinPosition({
-            top: startTop,
-            left: startLeft,
-            image,
-            shouldExpand: false,
-        });
-
-        setTimeout(() => {
-            const target = selectedCoinRef?.current;
-            if (!target) return;
-
-            const { top, left } = target.getBoundingClientRect();
-
-            setAnimatedCoinPosition({
-                top,
-                left,
-                image,
-                shouldExpand: true,
-            });
-
-            setFlipAll(true);
-            setOpenScroll(true);
-        }, 500);
-
-        setTimeout(() => {
-            reset();
-        }, 8000)
-    }
-
-    return (
-        <main
-            className="h-202 mx-auto max-w-360 bg-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23"
-            style={{ backgroundImage: `url(${background})` }}
-        >
-            <div className="flex items-center justify-between h-full">
-                <div className="shrink-0 w-160 space-y-3.5">
-                    {rows.map((row, rowIndex) => (
-                        <Row key={rowIndex}>
-                            {row.map((coinData) => (
-                                <Coin
-                                    key={coinData.digit}
-                                    digit={coinData.digit}
-                                    value={coinData.value}
-                                    flipAll={flipAll}
-                                    animateCoinFlight={animateCoinFlight}
-                                    canAnimate={canAnimate}
-                                    blockAnimation={() => setCanAnimate(false)}
-                                />
-                            ))}
-                        </Row>
-                    ))}
-                </div>
-                <div className="shrink-0">
-                    <div>
-                        <div
-                            ref={selectedCoinRef}
-                            className="size-62.75 relative top-16 mx-auto aspect-square rounded-full"
-                        ></div>
-                    </div>
-                    <Scroll isOpen={openScroll} />
-                </div>
-            </div>
-
-            {animatedCoinPosition != null && (
-                <CoinCopy {...animatedCoinPosition} />
-            )}
-        </main>
-    );
 }
 
 export default App;

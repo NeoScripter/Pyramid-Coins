@@ -1,17 +1,19 @@
-import Center from '@/assets/images/scroll-center.webp';
-import Left from '@/assets/images/left-scroll.webp';
-import Right from '@/assets/images/right-scroll.webp';
+import Center from '@/assets/images/pyramid/scroll-center.webp';
+import Left from '@/assets/images/pyramid/left-scroll.webp';
+import Right from '@/assets/images/pyramid/right-scroll.webp';
 import { cc } from '@/utils/cc';
 
 type ScrollProps = {
     isOpen: boolean;
+    winningText: string;
 };
-export default function Scroll({ isOpen }: ScrollProps) {
+export default function Scroll({ isOpen, winningText }: ScrollProps) {
+
     return (
         <div className="w-140 h-115 relative">
             <div
                 className={cc(
-                    'h-full transition-all duration-500 ease-in-out relative mx-auto flex justify-between overflow-clip',
+                    'h-full transition-all duration-3000 ease-in-out relative mx-auto flex justify-between overflow-clip',
                     isOpen ? 'w-140' : 'w-57'
                 )}
             >
@@ -28,7 +30,7 @@ export default function Scroll({ isOpen }: ScrollProps) {
 
                 <div
                     className={cc(
-                        'absolute inset-0 left-1/2 -translate-x-1/2 transition-all duration-500 ease-in-out bg-center bg-cover bg-no-repeat flex items-center justify-center',
+                        'absolute inset-0 left-1/2 -translate-x-1/2 transition-all duration-3000 ease-in-out bg-center bg-cover bg-no-repeat flex items-center justify-center',
                         isOpen ? 'w-85' : 'w-10'
                     )}
                     style={{ backgroundImage: `url(${Center})` }}
@@ -37,15 +39,11 @@ export default function Scroll({ isOpen }: ScrollProps) {
 
             <div
                 className={cc(
-                    'text-pretty text-center text-2xl absolute top-1/2 left-1/2 -translate-1/2 w-67.5 h-43.5 uppercase transition-opacity duration-300 ease-in',
+                    'text-pretty text-center text-2xl flex items-center justify-center absolute top-1/2 left-1/2 -translate-1/2 w-67.5 h-43.5 uppercase transition-opacity duration-2500 ease-in',
                     isOpen ? 'opacity-100 delay-200' : 'opacity-0'
                 )}
             >
-                КРУТИМ 30 СПИНОВ
-                <br />
-                ПО 40+ РУБЛЕЙ
-                <br />В 5 СЛОТЕ ИЗ РАЗДЕЛА New (новинки), ВЕСЬ ВЫИГРЫШ ЗАБИРАЙ
-                СЕБЕ! MAX WIN 10К
+                {winningText}
             </div>
         </div>
     );
