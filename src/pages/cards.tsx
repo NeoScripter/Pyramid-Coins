@@ -21,7 +21,7 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
     const [animatedCardIdx, setAnimatedCardIdx] = useState<number | null>(null);
 
     useEffect(() => {
-        setTimeout(() => setAnimatedCardIdx(0), 4000);
+        setTimeout(() => setAnimatedCardIdx(0), 850 * 4);
 
         const intervalId = setInterval(() => {
             if (animatedCardIdx != null) {
@@ -35,7 +35,7 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
                     return newIdx;
                 });
             }
-        }, 850 * 6);
+        }, 850 * 4);
 
         return () => clearInterval(intervalId);
     }, [animatedCardIdx]);
