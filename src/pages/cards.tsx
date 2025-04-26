@@ -44,6 +44,7 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
     );
 
     function handleSelection(selectedCardValue: number) {
+        setCanAnimate(false);
         setAnimatedCardIdx(null);
         setTimeout(() => setFlipAll(true), 3000);
         setTimeout(() => setIsAppearing(false), 9500);

@@ -27,11 +27,11 @@ export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClic
         <div
             onClick={handleClick}
             className={cc(
-                'group perspective w-45.5 h-59.25 overflow-clip transition-scale duration-250 ease-in hover:scale-130',
+                'group perspective w-45.5 h-59.25 overflow-clip transition-scale duration-250 ease-in',
                 canAnimate &&
                     shouldFlip === false &&
                     shouldAnimate &&
-                    'hover:z-20 not-hover:z-10 card-pulse cursor-pointer'
+                    'hover:z-20 not-hover:z-10 card-pulse cursor-pointer', (!flipAll && canAnimate) && 'hover:scale-130', shouldFlip && 'scale-120'
             )}
         >
             <div
