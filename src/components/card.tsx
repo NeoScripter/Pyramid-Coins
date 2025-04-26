@@ -9,8 +9,9 @@ type CardProps = {
     canAnimate: boolean;
     shouldAnimate: boolean;
     onClick: () => void;
+    index: number;
 };
-export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClick }: CardProps) {
+export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClick, index }: CardProps) {
     const [shouldFlip, setShouldFlip] = useState(false);
 
     const cardImage = useMemo(() => getCardImage(value), [value]);
@@ -27,16 +28,17 @@ export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClic
         <div
             onClick={handleClick}
             className={cc(
-                'group perspective w-45.5 h-59.25 overflow-clip transition-scale duration-250 ease-in',
+                'group perspective w-45.5 h-59.25 transition-scale duration-250 ease-in',
                 canAnimate &&
                     shouldFlip === false &&
                     shouldAnimate &&
                     'hover:z-20 not-hover:z-10 card-pulse cursor-pointer', (!flipAll && canAnimate) && 'hover:scale-130', shouldFlip && 'scale-120'
             )}
+            style={{ '--index': index } as React.CSSProperties}
         >
             <div
                 className={cc(
-                    'relative w-full h-full transition-transform duration-1250 preserve-3d',
+                    'relative w-full h-full transition-transform column-animation duration-1250 preserve-3d',
                     shouldFlip || flipAll ? 'rotate-y-180' : 'rotate-y-360',
                     canAnimate && 'cursor-pointer'
                 )}

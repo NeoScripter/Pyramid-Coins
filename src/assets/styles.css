@@ -48,6 +48,36 @@
     .appear {
         animation: fade-in 1000ms ease-in-out;
     }
+    .column-animation {
+        animation: columns calc(var(--index) * 1000ms) ease-in-out;
+    }
+    .card-animation {
+        animation: cards 1000ms ease-in-out;
+    }
+}
+
+@keyframes columns {
+    0% {
+        transform: translateX(calc(var(--index) * -211px));
+        z-index: 20;
+    }
+    80% {
+        transform: translateX(calc(var(--index) * -211px));
+        z-index: 20;
+    }
+    100% {
+        transform: translateX(0px);
+        z-index: 10;
+    }
+}
+
+@keyframes cards {
+    0% {
+        transform: translateY(calc(-200%));
+    }
+    100% {
+        transform: translateY(0%);
+    }
 }
 
 @keyframes coin-hover {

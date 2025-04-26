@@ -18,9 +18,11 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
     const [message, setMessage] = useState(entry);
     const [resetCount, setResetCount] = useState(0);
 
-    const [animatedCardIdx, setAnimatedCardIdx] = useState<number | null>(0);
+    const [animatedCardIdx, setAnimatedCardIdx] = useState<number | null>(null);
 
     useEffect(() => {
+        setTimeout(() => setAnimatedCardIdx(0), 4000);
+
         const intervalId = setInterval(() => {
             if (animatedCardIdx != null) {
                 setAnimatedCardIdx((prev) => {
@@ -100,12 +102,13 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
                         value={displayCard}
                         shouldAnimate={false}
                         onClick={() => {}}
+                        index={0}
                     />
 
                     <CardMessage message={message} />
                 </div>
 
-                <div className="flex items-center justify-center gap-7">
+                <div className="flex items-center justify-center gap-7 card-animation">
                     {playingCards.map((number, idx) => (
                         <Card
                             key={`card-${number}`}
@@ -114,6 +117,7 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
                             value={number}
                             shouldAnimate={animatedCardIdx === idx}
                             onClick={() => handleSelection(number)}
+                            index={idx}
                         />
                     ))}
                 </div>
