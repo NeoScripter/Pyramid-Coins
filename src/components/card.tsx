@@ -7,34 +7,31 @@ type CardProps = {
     value: number;
     flipAll: boolean;
     canAnimate: boolean;
+    shouldAnimate: boolean;
+    onClick: () => void;
 };
-export default function Card({ value, flipAll, canAnimate }: CardProps) {
+export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClick }: CardProps) {
     const [shouldFlip, setShouldFlip] = useState(false);
-    const [shouldAnimate, setShouldAnimate] = useState(false);
 
     const cardImage = useMemo(() => getCardImage(value), [value]);
 
-    function triggerAnimation() {
-        setShouldAnimate(true);
-        setTimeout(() => setShouldAnimate(false), 850);
-    }
 
     function handleClick() {
         if (canAnimate === false) return;
 
         setShouldFlip((o) => !o);
+        onClick();
     }
 
     return (
         <div
             onClick={handleClick}
-            onMouseEnter={triggerAnimation}
             className={cc(
-                'group perspective w-45.5 h-59.25 overflow-clip transition-scale duration-250 ease-in',
+                'group perspective w-45.5 h-59.25 overflow-clip transition-scale duration-250 ease-in hover:scale-130',
                 canAnimate &&
                     shouldFlip === false &&
                     shouldAnimate &&
-                    'hover:z-20 not-hover:z-10 card-hover cursor-pointer'
+                    'hover:z-20 not-hover:z-10 card-pulse cursor-pointer'
             )}
         >
             <div

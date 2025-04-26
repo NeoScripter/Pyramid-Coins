@@ -95,9 +95,9 @@ export default function Pyramid({ resetGame }: PyramidProps) {
         }, 9500);
         setTimeout(() => {
             reset();
-        }, 10000);
+        }, 1000);
     }
-
+    /* 1000 * 60 * 2 */
     return (
         <main
             className={cc(

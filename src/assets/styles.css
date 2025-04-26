@@ -39,8 +39,8 @@
     .coin-hover {
         animation: coin-hover 850ms ease-in-out;
     }
-    .card-hover {
-        animation: card-hover 850ms ease-in-out;
+    .card-pulse {
+        animation: card-pulse 850ms ease-in-out infinite;
     }
     .disappear {
         animation: fade-out 1000ms ease-in-out;
@@ -87,17 +87,14 @@
     }
 }
 
-@keyframes card-hover {
+@keyframes card-pulse {
     0% {
         transform: scale(1);
-        z-index: 10;
     }
     50% {
         transform: scale(1.1);
-        z-index: 20;
     }
     100% {
         transform: scale(1);
-        z-index: 10;
     }
 }

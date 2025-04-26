@@ -32,3 +32,58 @@ const cardImages: Record<number, string> = {
 export function getCardImage(cardNumber: number): string {
     return cardImages[cardNumber] || '';
 }
+
+function getCardsKeys() {
+    return Array.from(
+        { length: Object.keys(cardImages).length },
+        (_, i) => i + 1
+    );
+}
+
+export function getDisplayCardValue(numbers: number[]): number {
+    const slice = numbers.slice(2, -2);
+    const randomIdx = Math.floor(Math.random() * slice.length);
+    return slice[randomIdx];
+}
+
+export function getPlayingCards() {
+    const numbers = getCardsKeys();
+    const displayCard = getDisplayCardValue(numbers);
+
+    const displayCardIdx = numbers.indexOf(displayCard);
+
+    const smallerCards = generateCardsFromSlice(
+        numbers.slice(0, displayCardIdx)
+    );
+    const largerCards = generateCardsFromSlice(
+        numbers.slice(displayCardIdx + 1)
+    );
+
+    return {
+        playingCards: shuffleArray([...smallerCards, ...largerCards]),
+        displayCard: displayCard,
+    };
+}
+
+function generateCardsFromSlice(slice: number[]): number[] {
+    if (slice.length < 2) return [...slice];
+
+    const indices = [...Array(slice.length).keys()];
+    const firstIdx = Math.floor(Math.random() * indices.length);
+    const first = slice[firstIdx];
+    indices.splice(firstIdx, 1);
+
+    const secondIdx = Math.floor(Math.random() * indices.length);
+    const second = slice[indices[secondIdx]];
+
+    return [first, second];
+}
+
+function shuffleArray<T>(array: T[]): T[] {
+    const result = [...array];
+    for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+    }
+    return result;
+}

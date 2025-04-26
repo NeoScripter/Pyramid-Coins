@@ -1,8 +1,9 @@
 import { cc } from '@/utils/cc';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import background from '@/assets/images/cards/cards-bg.webp';
 import Card from '@/components/card';
 import CardMessage from '@/components/card-message';
+import { getPlayingCards } from '@/utils/card-images';
 
 type CardsProps = {
     goToPyramid: () => void;
@@ -13,6 +14,44 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
     const [flipAll, setFlipAll] = useState(false);
     const [canAnimate, setCanAnimate] = useState(true);
     const [message, setMessage] = useState('Пробей карту! Фарту масти!');
+    const [resetCount, setResetCount] = useState(0);
+
+    const [animatedCardIdx, setAnimatedCardIdx] = useState<number | null>(0);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            if (animatedCardIdx != null) {
+                setAnimatedCardIdx((prev) => {
+                    let newIdx = prev;
+
+                    while (newIdx === prev) {
+                        newIdx = Math.floor(Math.random() * 4);
+                    }
+
+                    return newIdx;
+                });
+            }
+        }, 850 * 6);
+
+        return () => clearInterval(intervalId);
+    }, [animatedCardIdx]);
+
+    const { playingCards, displayCard } = useMemo(
+        () => getPlayingCards(),
+        [resetCount]
+    );
+
+    function handleSelection(selectedCardValue: number) {
+        setAnimatedCardIdx(null);
+        setTimeout(() => setFlipAll(true), 3000);
+        setTimeout(() => setIsAppearing(false), 9500);
+
+        if (selectedCardValue < displayCard) {
+            handleLose();
+        } else {
+            handleWin();
+        }
+    }
 
     function reset() {
         setFlipAll(false);
@@ -20,28 +59,26 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
 
         setTimeout(() => {
             setCanAnimate(true);
+            setResetCount((prev) => prev + 1);
+            setAnimatedCardIdx(0);
         }, 500);
     }
 
     function handleWin() {
-        setMessage('Красава! Мощная аура!');
-        setTimeout(() => setIsAppearing(false), 4500);
+        setTimeout(() => setMessage('Победа!'), 1000);
         setTimeout(() => {
             goToPyramid();
             reset();
-        }, 5000);
+        }, 10000);
     }
 
     function handleLose() {
-        setMessage('Ну вот, опять проиграл!');
-        setTimeout(() => setIsAppearing(false), 4500);
+        setTimeout(() => setMessage('Проиграл!'), 1000);
         setTimeout(() => {
             goToEntry();
             reset();
-        }, 5000);
+        }, 10000);
     }
-
-    const cardDeck = [3, 4, 5, 6];
 
     return (
         <main
@@ -54,26 +91,26 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
             <div className="w-252.5 mx-auto">
                 <div className="flex items-center gap-11.5 h-92.25 mb-12.5">
                     <Card
-                        key="preview-card"
+                        key="display-card"
                         flipAll={true}
                         canAnimate={false}
-                        value={7}
+                        value={displayCard}
+                        shouldAnimate={false}
+                        onClick={() => {}}
                     />
 
                     <CardMessage message={message} />
                 </div>
 
-                <div className='text-white text-2xl flex items-center justify-center gap-5'>
-                    <button onClick={handleWin}>Win</button>
-                    <button onClick={handleLose}>Lose</button>
-                </div>
                 <div className="flex items-center justify-center gap-7">
-                    {cardDeck.map((number) => (
+                    {playingCards.map((number, idx) => (
                         <Card
                             key={`card-${number}`}
                             flipAll={flipAll}
                             canAnimate={canAnimate}
-                            value={7}
+                            value={number}
+                            shouldAnimate={animatedCardIdx === idx}
+                            onClick={() => handleSelection(number)}
                         />
                     ))}
                 </div>

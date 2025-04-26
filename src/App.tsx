@@ -12,7 +12,7 @@ function App() {
 
     switch (currentPage) {
         case 'entry':
-            return <Entry handleNoRefClick={() => setCurrentPage('pyramid')} handleRefClick={() => setCurrentPage('cards')} />;
+            return <Entry handleNoRefClick={() => setCurrentPage('cards')} handleRefClick={() => setCurrentPage('pyramid')} />;
         case 'pyramid':
             return <Pyramid resetGame={() => setCurrentPage('entry')} />;
         default:
