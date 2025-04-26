@@ -4,6 +4,7 @@ import background from '@/assets/images/cards/cards-bg.webp';
 import Card from '@/components/card';
 import CardMessage from '@/components/card-message';
 import { getPlayingCards } from '@/utils/card-images';
+import { useCardMessages } from '@/hooks/use-card-messages';
 
 type CardsProps = {
     goToPyramid: () => void;
@@ -13,7 +14,8 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
     const [isAppearing, setIsAppearing] = useState(true);
     const [flipAll, setFlipAll] = useState(false);
     const [canAnimate, setCanAnimate] = useState(true);
-    const [message, setMessage] = useState('Пробей карту! Фарту масти!');
+    const { win, lose, entry } = useCardMessages();
+    const [message, setMessage] = useState(entry);
     const [resetCount, setResetCount] = useState(0);
 
     const [animatedCardIdx, setAnimatedCardIdx] = useState<number | null>(0);
@@ -55,7 +57,7 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
 
     function reset() {
         setFlipAll(false);
-        setMessage('Пробей карту! Фарту масти!');
+        setMessage(entry);
 
         setTimeout(() => {
             setCanAnimate(true);
@@ -65,19 +67,19 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
     }
 
     function handleWin() {
-        setTimeout(() => setMessage('Победа!'), 1000);
+        setTimeout(() => setMessage(win), 1000);
         setTimeout(() => {
             goToPyramid();
             reset();
-        }, 10000);
+        }, 9000);
     }
 
     function handleLose() {
-        setTimeout(() => setMessage('Проиграл!'), 1000);
+        setTimeout(() => setMessage(lose), 1000);
         setTimeout(() => {
             goToEntry();
             reset();
-        }, 10000);
+        }, 9000);
     }
 
     return (
