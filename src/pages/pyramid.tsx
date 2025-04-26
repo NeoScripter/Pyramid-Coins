@@ -87,6 +87,10 @@ export default function Pyramid({ resetGame }: PyramidProps) {
         }, 3500);
 
         setTimeout(() => {
+            setAnimatedCoinPosition(null);
+        }, 8000)
+
+        setTimeout(() => {
             setIsAppearing(false);
         }, 9500);
         setTimeout(() => {

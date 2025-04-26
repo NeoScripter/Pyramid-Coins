@@ -16,7 +16,7 @@ function App() {
         case 'pyramid':
             return <Pyramid resetGame={() => setCurrentPage('entry')} />;
         default:
-            return <Cards />;
+            return <Cards goToPyramid={() => setCurrentPage('pyramid')} goToEntry={() => setCurrentPage('entry')} />;
     }
 }
 

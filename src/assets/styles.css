@@ -3,6 +3,8 @@
 @theme {
     --font-display: 'Corporate A Pro', 'sans-serif';
     --font-coins: 'Bree Serif', 'serif';
+
+    --color-yellow-primary: oklch(0.77 0.124 77.77);
 }
 
 .text-gradient {
@@ -36,6 +38,9 @@
 @media (not (prefers-reduced-motion: reduce)) {
     .coin-hover {
         animation: coin-hover 850ms ease-in-out;
+    }
+    .card-hover {
+        animation: card-hover 850ms ease-in-out;
     }
     .disappear {
         animation: fade-out 1000ms ease-in-out;
@@ -79,5 +84,20 @@
     100% {
         transform: scale(1.4);
         opacity: 0%;
+    }
+}
+
+@keyframes card-hover {
+    0% {
+        transform: scale(1);
+        z-index: 10;
+    }
+    50% {
+        transform: scale(1.1);
+        z-index: 20;
+    }
+    100% {
+        transform: scale(1);
+        z-index: 10;
     }
 }
