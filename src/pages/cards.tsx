@@ -9,11 +9,18 @@ import { useCardMessages } from '@/hooks/use-card-messages';
 type CardsProps = {
     goToPyramid: () => void;
     goToEntry: () => void;
+    showTransition: () => void;
 };
-export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
-    const [isAppearing, setIsAppearing] = useState(true);
+
+const TRANSITION_DELAY = 9000;
+
+export default function Cards({
+    goToPyramid,
+    goToEntry,
+    showTransition,
+}: CardsProps) {
     const [flipAll, setFlipAll] = useState(false);
-    const [canAnimate, setCanAnimate] = useState(true);
+    const [canAnimate, setCanAnimate] = useState(false);
     const { win, lose, entry } = useCardMessages();
     const [message, setMessage] = useState(entry);
     const [resetCount, setResetCount] = useState(0);
@@ -22,6 +29,7 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
 
     useEffect(() => {
         setTimeout(() => setAnimatedCardIdx(0), 850 * 4);
+        setTimeout(() => setCanAnimate(true), 850 * 4);
 
         const intervalId = setInterval(() => {
             if (animatedCardIdx != null) {
@@ -49,7 +57,7 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
         setCanAnimate(false);
         setAnimatedCardIdx(null);
         setTimeout(() => setFlipAll(true), 3000);
-        setTimeout(() => setIsAppearing(false), 9500);
+        setTimeout(() => showTransition(), TRANSITION_DELAY - 1500);
 
         if (selectedCardValue < displayCard) {
             handleLose();
@@ -74,7 +82,7 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
         setTimeout(() => {
             goToPyramid();
             reset();
-        }, 9000);
+        }, TRANSITION_DELAY);
     }
 
     function handleLose() {
@@ -82,14 +90,13 @@ export default function Cards({ goToPyramid, goToEntry }: CardsProps) {
         setTimeout(() => {
             goToEntry();
             reset();
-        }, 9000);
+        }, TRANSITION_DELAY);
     }
 
     return (
         <main
             className={cc(
-                'h-202 mx-auto max-w-360 bg-no-repeat bg-cover pt-11',
-                isAppearing ? 'appear' : 'disappear'
+                'h-202 mx-auto max-w-360 bg-no-repeat bg-cover pt-11'
             )}
             style={{ backgroundImage: `url(${background})` }}
         >

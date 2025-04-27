@@ -12,12 +12,13 @@ import { cc } from '@/utils/cc';
 
 type PyramidProps = {
     resetGame: () => void;
+    showTransition: () => void;
 };
 
 /* const DISAPPEARING_TIME = 1000 * 60 * 2; */
 const DISAPPEARING_TIME = 10000;
 
-export default function Pyramid({ resetGame }: PyramidProps) {
+export default function Pyramid({ resetGame, showTransition }: PyramidProps) {
     const [openScroll, setOpenScroll] = useState(false);
     const [flipAll, setFlipAll] = useState(false);
     const [canAnimate, setCanAnimate] = useState(true);
@@ -30,7 +31,6 @@ export default function Pyramid({ resetGame }: PyramidProps) {
         'bronze' | 'golden' | 'silver' | null
     >();
     const { golden, silver, bronze } = useCoinPrizes();
-    const [isAppearing, setIsAppearing] = useState(true);
 
     const [animatedCoinIdx, setAnimatedCoinIdx] = useState<number>(0);
 
@@ -121,8 +121,8 @@ export default function Pyramid({ resetGame }: PyramidProps) {
         }, 3500);
 
         setTimeout(() => {
-            setIsAppearing(false);
-        }, DISAPPEARING_TIME - 500);
+            showTransition();
+        }, DISAPPEARING_TIME - 1500);
         setTimeout(() => {
             reset();
         }, DISAPPEARING_TIME);
@@ -131,8 +131,7 @@ export default function Pyramid({ resetGame }: PyramidProps) {
     return (
         <main
             className={cc(
-                'h-202 mx-auto max-w-360 bg-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23',
-                isAppearing ? 'appear' : 'disappear'
+                'h-202 mx-auto max-w-360 bg-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23'
             )}
             style={{ backgroundImage: `url(${background})` }}
         >

@@ -35,6 +35,21 @@
     transform-style: preserve-3d;
 }
 
+.overlay {
+    position: absolute;
+    inset: 0;
+    clip-path: circle(150% at 50% 50%);
+    transition: clip-path 1.5s ease-in-out;
+}
+
+.overlay.open {
+    clip-path: circle(0% at 50% 50%); 
+}
+
+.overlay.close {
+    clip-path: circle(150% at 50% 50%); 
+}
+
 @media (not (prefers-reduced-motion: reduce)) {
     .coin-hover {
         animation: coin-hover 1250ms ease-in-out;
