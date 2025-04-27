@@ -29,7 +29,6 @@ export default function Cards({
 
     useEffect(() => {
         setTimeout(() => setAnimatedCardIdx(0), 850 * 4);
-        setTimeout(() => setCanAnimate(true), 850 * 4);
 
         const intervalId = setInterval(() => {
             if (animatedCardIdx != null) {
@@ -47,6 +46,10 @@ export default function Cards({
 
         return () => clearInterval(intervalId);
     }, [animatedCardIdx]);
+
+    useEffect(() => {
+        setTimeout(() => setCanAnimate(true), 850 * 4);
+    }, []);
 
     const { playingCards, displayCard } = useMemo(
         () => getPlayingCards(),
