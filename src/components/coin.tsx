@@ -14,6 +14,7 @@ type CoinProps = {
     canAnimate: boolean;
     blockAnimation: () => void;
     assignCoin: () => void;
+    shouldPulse: boolean;
 };
 
 export default function Coin({
@@ -24,14 +25,22 @@ export default function Coin({
     canAnimate,
     blockAnimation,
     assignCoin,
+    shouldPulse,
 }: CoinProps) {
     const [shouldFlip, setShouldFlip] = useState(false);
     const [shouldAnimate, setShouldAnimate] = useState(false);
 
-    function triggerAnimation() {
+    /* function triggerAnimation() {
         setShouldAnimate(true);
         setTimeout(() => setShouldAnimate(false), 850);
-    }
+    } */
+
+    useEffect(() => {
+        if (shouldPulse) {
+            setShouldAnimate(true);
+            setTimeout(() => setShouldAnimate(false), 1250);
+        }
+    }, [shouldPulse]);
 
     useEffect(() => {
         if (flipAll === true) {
@@ -64,7 +73,6 @@ export default function Coin({
     return (
         <div
             onClick={handleClick}
-            onMouseEnter={triggerAnimation}
             className={cc(
                 'group perspective size-18 transition-scale duration-250 ease-in',
                 canAnimate &&

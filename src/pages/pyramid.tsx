@@ -1,9 +1,9 @@
 import background from '@/assets/images/pyramid/background.webp';
 import Scroll from '@/components/scroll';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import Coin from '@/components/coin';
 import Row from '@/components/row';
-import { generateCoins } from '@/utils/generate-coins';
+import { generateCoins, TOTAL_COINS } from '@/utils/generate-coins';
 import { generateCoinRows } from '@/utils/generate-rows';
 import CoinCopy, { CoinCopyProps } from '@/components/coin-copy';
 import { useCoinPrizes } from '@/hooks/use-coin-prices';
@@ -31,6 +31,24 @@ export default function Pyramid({ resetGame }: PyramidProps) {
     >();
     const { golden, silver, bronze } = useCoinPrizes();
     const [isAppearing, setIsAppearing] = useState(true);
+
+    const [animatedCoinIdx, setAnimatedCoinIdx] = useState<number>(0);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setAnimatedCoinIdx((prev) => {
+                let newIdx = prev;
+
+                while (newIdx === prev) {
+                    newIdx = Math.floor(Math.random() * TOTAL_COINS);
+                }
+
+                return newIdx;
+            });
+        }, 1250 * 1.5);
+
+        return () => clearInterval(intervalId);
+    }, [animatedCoinIdx]);
 
     function reset() {
         setOpenScroll(false);
@@ -133,6 +151,9 @@ export default function Pyramid({ resetGame }: PyramidProps) {
                                     blockAnimation={() => setCanAnimate(false)}
                                     assignCoin={() =>
                                         setWinningCoin(coinData.value)
+                                    }
+                                    shouldPulse={
+                                        animatedCoinIdx + 1 === coinData.digit
                                     }
                                 />
                             ))}

@@ -37,7 +37,7 @@
 
 @media (not (prefers-reduced-motion: reduce)) {
     .coin-hover {
-        animation: coin-hover 850ms ease-in-out;
+        animation: coin-hover 1250ms ease-in-out;
     }
     .card-pulse {
         animation: card-pulse 850ms ease-in-out infinite;
@@ -86,7 +86,7 @@
         z-index: 10;
     }
     50% {
-        transform: scale(1.5);
+        transform: scale(1.4);
         z-index: 20;
     }
     100% {

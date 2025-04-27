@@ -2,7 +2,7 @@ import { CoinType } from "@/types/coins";
 
 const GOLDEN_COUNT = 1;
 const SILVER_COUNT = 3;
-const TOTAL_COINS = 36;
+export const TOTAL_COINS = 36;
 const BRONZE_COUNT = TOTAL_COINS - GOLDEN_COUNT - SILVER_COUNT;
 
 export function generateCoins(): CoinType[] {
