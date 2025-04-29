@@ -1,4 +1,7 @@
 import background from '@/assets/images/pyramid/background.webp';
+import fire from '@/assets/images/pyramid/fire.gif';
+
+import placeholder  from "@/assets/images/pyramid/placeholder.png";
 import Scroll from '@/components/scroll';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Coin from '@/components/coin';
@@ -13,12 +16,13 @@ import { cc } from '@/utils/cc';
 type PyramidProps = {
     resetGame: () => void;
     showTransition: () => void;
+    isFire: boolean;
 };
 
 /* const DISAPPEARING_TIME = 1000 * 60 * 2; */
 const DISAPPEARING_TIME = 10000;
 
-export default function Pyramid({ resetGame, showTransition }: PyramidProps) {
+export default function Pyramid({ resetGame, showTransition, isFire }: PyramidProps) {
     const [openScroll, setOpenScroll] = useState(false);
     const [flipAll, setFlipAll] = useState(false);
     const [canAnimate, setCanAnimate] = useState(true);
@@ -59,7 +63,7 @@ export default function Pyramid({ resetGame, showTransition }: PyramidProps) {
         setTimeout(() => {
             setResetCount((prev) => prev + 1);
             setCanAnimate(true);
-            setImage('');
+            setImage(placeholder);
         }, 500);
     }
 
@@ -131,10 +135,11 @@ export default function Pyramid({ resetGame, showTransition }: PyramidProps) {
     return (
         <main
             className={cc(
-                'h-202 mx-auto max-w-360 bg-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23'
+                'h-202 mx-auto w-full max-w-360 bg-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23 relative'
             )}
             style={{ backgroundImage: `url(${background})` }}
         >
+            {isFire && <div className='absolute inset-0 bg-cover' style={{ backgroundImage: `url(${fire})` }}></div>}
             <div className="flex items-center justify-between h-full">
                 <div className="shrink-0 w-160 space-y-3.5">
                     {rows.map((row, rowIndex) => (
@@ -167,7 +172,7 @@ export default function Pyramid({ resetGame, showTransition }: PyramidProps) {
                         >
                             <img
                                 ref={selectedImageRef}
-                                src=""
+                                src={placeholder}
                                 alt=""
                                 className="w-full h-full object-center object-cover rounded-full"
                             />

@@ -6,7 +6,7 @@ type CardMessageProps = {
 export default function CardMessage({ message }: CardMessageProps) {
     return (
         <div
-            className="bg-no-repeat bg-contain h-full w-138.5 flex items-center justify-center text-yellow-primary text-4xl uppercase text-balance"
+            className="bg-no-repeat bg-contain h-full basis-138.5 shrink-0 flex items-center justify-center text-yellow-primary text-4xl uppercase text-balance"
             style={{ backgroundImage: `url(${background})` }}
         >
             <span className="w-2/3 text-center">{message}</span>

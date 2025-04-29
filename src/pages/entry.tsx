@@ -28,7 +28,7 @@ export default function Entry({
     return (
         <main
             className={cc(
-                'h-202 mx-auto max-w-360 bg-center flex items-center justify-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23'
+                'h-202 mx-auto w-full max-w-360 bg-center flex items-center justify-center bg-no-repeat bg-cover pt-18 pl-18 pb-15 pr-23'
             )}
             style={{ backgroundImage: `url(${background})` }}
         >

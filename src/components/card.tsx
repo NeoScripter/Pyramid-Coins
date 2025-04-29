@@ -1,5 +1,5 @@
 import { cc } from '@/utils/cc';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import back from '@/assets/images/cards/card-back.webp';
 import { getCardImage } from '@/utils/card-images';
 
@@ -10,12 +10,18 @@ type CardProps = {
     shouldAnimate: boolean;
     onClick: () => void;
     index: number;
+    className?: string;
 };
-export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClick, index }: CardProps) {
+export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClick, index, className }: CardProps) {
     const [shouldFlip, setShouldFlip] = useState(false);
 
     const cardImage = useMemo(() => getCardImage(value), [value]);
 
+    useEffect(() => {
+        if (flipAll) {
+            setShouldFlip(false);
+        }
+    }, [flipAll])
 
     function handleClick() {
         if (canAnimate === false) return;
@@ -28,7 +34,7 @@ export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClic
         <div
             onClick={handleClick}
             className={cc(
-                'group perspective w-45.5 h-59.25 transition-scale duration-250 ease-in',
+                'group perspective w-45.5 h-59.25 transition-scale duration-250 ease-in', className,
                 canAnimate &&
                     shouldFlip === false &&
                     shouldAnimate &&

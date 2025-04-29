@@ -6,7 +6,7 @@ import Entry from '@/pages/entry';
 import Cards from '@/pages/cards';
 import { cc } from '@/utils/cc';
 
-type Page = 'cards' | 'pyramid' | 'entry';
+type Page = 'cards' | 'pyramid' | 'entry' | 'pyramid-fire';
 
 function App() {
     const [currentPage, setCurrentPage] = useState<Page>('entry');
@@ -34,6 +34,17 @@ function App() {
                     <Pyramid
                         resetGame={() => setCurrentPage('entry')}
                         showTransition={showTransition}
+                        isFire={false}
+                    />
+                </div>
+            );
+        case 'pyramid-fire':
+            return (
+                <div className={cc('overlay', isOpen ? 'open' : 'close')}>
+                    <Pyramid
+                        resetGame={() => setCurrentPage('entry')}
+                        showTransition={showTransition}
+                        isFire={true}
                     />
                 </div>
             );
@@ -42,6 +53,7 @@ function App() {
                 <div className={cc('overlay', isOpen ? 'open' : 'close')}>
                     <Cards
                         goToPyramid={() => setCurrentPage('pyramid')}
+                        goToPyramidFire={() => setCurrentPage('pyramid-fire')}
                         goToEntry={() => setCurrentPage('entry')}
                         showTransition={showTransition}
                     />

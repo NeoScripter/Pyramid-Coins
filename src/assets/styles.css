@@ -38,6 +38,9 @@
 .overlay {
     position: absolute;
     inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     clip-path: circle(150% at 50% 50%);
     transition: clip-path 1.5s ease-in-out;
 }
@@ -61,7 +64,7 @@
         animation: fade-out 1000ms ease-in-out;
     }
     .appear {
-        animation: fade-in 1000ms ease-in-out;
+        animation: fade-in 750ms ease-in-out;
     }
     .column-animation {
         animation: columns calc(var(--index) * 1000ms) ease-in-out;
@@ -112,11 +115,9 @@
 
 @keyframes fade-in {
     0% {
-        transform: scale(0.75);
         opacity: 0%;
     }
     100% {
-        transform: scale(1);
         opacity: 100%;
     }
 }
