@@ -4,16 +4,16 @@ import cardBtn from '@/assets/images/cards/card-btn.webp';
 
 type CardBtnsProps = {
     isOpen: boolean;
-    handleWin: () => void;
-    reset: () => void;
+    handleReset: () => void;
+    handleDouble: () => void;
 };
-export default function CardBtns({ isOpen, handleWin, reset }: CardBtnsProps) {
+export default function CardBtns({ isOpen, handleReset, handleDouble }: CardBtnsProps) {
     if (isOpen === false) return null;
 
     return (
         <div className="w-full appear">
             <button
-                onClick={handleWin}
+                onClick={handleReset}
                 className="w-full mb-4 h-24 flex items-center justify-center bg-no-repeat bg-contain cursor-pointer transition-scale duration-300 ease-in-out hover:scale-110"
                 style={{ backgroundImage: `url(${cardBtn})` }}
             >
@@ -25,7 +25,7 @@ export default function CardBtns({ isOpen, handleWin, reset }: CardBtnsProps) {
             </button>
 
             <button
-                onClick={reset}
+                onClick={handleDouble}
                 className="w-full h-24 flex items-center justify-center bg-no-repeat bg-contain cursor-pointer transition-scale duration-300 ease-in-out hover:scale-110"
                 style={{ backgroundImage: `url(${cardBtn})` }}
             >

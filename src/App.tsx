@@ -11,10 +11,16 @@ type Page = 'cards' | 'pyramid' | 'entry' | 'pyramid-fire';
 function App() {
     const [currentPage, setCurrentPage] = useState<Page>('entry');
     const [isOpen, setIsOpen] = useState(false);
+    const [hasWonBefore, setHasWonBefore] = useState(false);
 
     function showTransition() {
         setIsOpen(true);
         setTimeout(() => setIsOpen(false), 1500);
+    }
+
+    function resetGame() {
+        setCurrentPage('entry');
+        setHasWonBefore(false);
     }
 
     switch (currentPage) {
@@ -32,19 +38,16 @@ function App() {
             return (
                 <div className={cc('overlay', isOpen ? 'open' : 'close')}>
                     <Pyramid
-                        resetGame={() => setCurrentPage('entry')}
+                        resetGame={() => resetGame()}
                         showTransition={showTransition}
-                        isFire={false}
-                    />
-                </div>
-            );
-        case 'pyramid-fire':
-            return (
-                <div className={cc('overlay', isOpen ? 'open' : 'close')}>
-                    <Pyramid
-                        resetGame={() => setCurrentPage('entry')}
-                        showTransition={showTransition}
-                        isFire={true}
+                        isFire={hasWonBefore}
+                        handleDoubleBtnClick={() => {
+                            showTransition();
+                            setTimeout(() => {
+                                setHasWonBefore(true);
+                                setCurrentPage('cards');
+                            }, 1500);
+                        }}
                     />
                 </div>
             );
@@ -53,9 +56,10 @@ function App() {
                 <div className={cc('overlay', isOpen ? 'open' : 'close')}>
                     <Cards
                         goToPyramid={() => setCurrentPage('pyramid')}
-                        goToPyramidFire={() => setCurrentPage('pyramid-fire')}
-                        goToEntry={() => setCurrentPage('entry')}
                         showTransition={showTransition}
+                        hasWonBefore={hasWonBefore}
+                        resetGame={() => resetGame()}
+                        addWin={() => setHasWonBefore(true)}
                     />
                 </div>
             );
