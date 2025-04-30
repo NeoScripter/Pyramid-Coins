@@ -2,6 +2,9 @@ import { cc } from '@/utils/cc';
 import { useEffect, useMemo, useState } from 'react';
 import back from '@/assets/images/cards/card-back.webp';
 import { getCardImage } from '@/utils/card-images';
+import hoverSound from '@/assets/sounds/cards/card-hover.wav';
+import clickSould from '@/assets/sounds/cards/selection.wav';
+import { playAudio } from '@/utils/play-audio';
 
 type CardProps = {
     value: number;
@@ -27,11 +30,17 @@ export default function Card({ value, flipAll, canAnimate, shouldAnimate, onClic
         if (canAnimate === false) return;
 
         setShouldFlip((o) => !o);
+        playAudio(clickSould);
         onClick();
     }
 
     return (
         <div
+            onMouseEnter={() => {
+                if (canAnimate) {
+                    playAudio(hoverSound)
+                }
+            }}
             onClick={handleClick}
             className={cc(
                 'group perspective w-45.5 h-59.25 transition-scale duration-250 ease-in', className,

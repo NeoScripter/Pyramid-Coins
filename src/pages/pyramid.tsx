@@ -13,6 +13,10 @@ import { useCoinPrizes } from '@/hooks/use-coin-prices';
 import { getRandomItem } from '@/utils/get-random-item';
 import { cc } from '@/utils/cc';
 import DoubleBtn from '@/components/double-btn';
+import flipSound from '@/assets/sounds/pyramid/flip-sound.wav';
+import scrollOpen from '@/assets/sounds/pyramid/scroll-open.wav';
+
+import { playAudio } from '@/utils/play-audio';
 
 type PyramidProps = {
     resetGame: () => void;
@@ -22,7 +26,7 @@ type PyramidProps = {
 };
 
 /* const DISAPPEARING_TIME = 1000 * 60 * 2; */
-const DISAPPEARING_TIME = 10000;
+const DISAPPEARING_TIME = 1000 * 60 * 2;
 
 export default function Pyramid({
     resetGame,
@@ -126,7 +130,9 @@ export default function Pyramid({
 
         setTimeout(() => {
             setFlipAll(true);
+            playAudio(flipSound);
             setOpenScroll(true);
+            playAudio(scrollOpen);
 
             setImage(image);
             setAnimatedCoinPosition(null);

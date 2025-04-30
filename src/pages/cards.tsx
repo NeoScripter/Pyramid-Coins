@@ -5,10 +5,11 @@ import Card from '@/components/card';
 import CardMessage from '@/components/card-message';
 import { getPlayingCards } from '@/utils/card-images';
 import { useCardMessages } from '@/hooks/use-card-messages';
-import winSound from '@/assets/sounds/win-sound.mp3';
-import loseSound from '@/assets/sounds/lose-sound.mp3';
+import winSound from '@/assets/sounds/cards/win.wav';
+import loseSound from '@/assets/sounds/cards/lose.wav';
 import CardBtns from '@/components/card-btns';
 import { playAudio } from '@/utils/play-audio';
+import shuffleSound from '@/assets/sounds/cards/shuffle.wav';
 
 type CardsProps = {
     goToPyramid: () => void;
@@ -39,6 +40,18 @@ export default function Cards({
     const [animatedCardIdx, setAnimatedCardIdx] = useState<number | null>(null);
 
     useEffect(() => {
+        playShuffleSound();
+    }, []);
+
+    function playShuffleSound() {
+        let baseTimeout = 250;
+        setTimeout(() => playAudio(shuffleSound), baseTimeout += 750);
+        setTimeout(() => playAudio(shuffleSound), baseTimeout += 750);
+        setTimeout(() => playAudio(shuffleSound), baseTimeout += 750);
+        setTimeout(() => playAudio(shuffleSound), baseTimeout);
+    }
+
+    useEffect(() => {
         setTimeout(() => setAnimatedCardIdx(0), ANIMATION_DELAY);
 
         const intervalId = setInterval(() => {
@@ -62,7 +75,7 @@ export default function Cards({
         setTimeout(() => setCanAnimate(true), ANIMATION_DELAY);
     }, []);
 
-     const { playingCards, displayCard } = useMemo(
+    const { playingCards, displayCard } = useMemo(
         () => getPlayingCards(),
         [resetCount]
     );
@@ -116,7 +129,7 @@ export default function Cards({
             playAudio(winSound, true);
         }, 1000);
         if (hasWonBefore) {
-            setTimeout(() => moveToPyramid(), TRANSITION_DELAY - 4000)
+            setTimeout(() => moveToPyramid(), TRANSITION_DELAY - 4000);
         } else {
             addWin();
             setTimeout(() => setShowBtnGroup(true), TRANSITION_DELAY - 4000);
@@ -127,6 +140,7 @@ export default function Cards({
         setShowCards(false);
         setTimeout(() => {
             reset();
+            playShuffleSound();
             setShowCards(true);
         }, 700);
     }

@@ -4,6 +4,14 @@ import rightBtn from '@/assets/images/entry/entry-btn-2.webp';
 import leftBtnTitle from '@/assets/images/entry/btn-1-title.webp';
 import rightBtnTitle from '@/assets/images/entry/btn-2-title.webp';
 import { cc } from '@/utils/cc';
+import btnHover from '@/assets/sounds/entry/btn-hover.wav';
+import btnClick from '@/assets/sounds/entry/btn-click.wav';
+import pageOpen from '@/assets/sounds/entry/page-open.wav';
+
+
+
+
+import { playAudio } from '@/utils/play-audio';
 
 type EntryProps = {
     handleRefClick: () => void;
@@ -17,13 +25,18 @@ export default function Entry({
 }: EntryProps) {
     function handleRef() {
         showTransition();
+        playAudio(btnClick);
+        playAudio(pageOpen);
         setTimeout(() => handleRefClick(), 1500);
     }
 
     function handleNoRef() {
         showTransition();
+        playAudio(btnClick);
+        playAudio(pageOpen);
         setTimeout(() => handleNoRefClick(), 1500);
     }
+
 
     return (
         <main
@@ -34,6 +47,7 @@ export default function Entry({
         >
             <div className="flex items-center justify-between w-300">
                 <button
+                    onMouseEnter={() => playAudio(btnHover)}
                     onClick={handleRef}
                     className="w-118 h-42.25 flex items-center justify-center bg-no-repeat bg-contain cursor-pointer transition-scale duration-300 ease-in-out hover:scale-110"
                     style={{ backgroundImage: `url(${leftBtn})` }}
@@ -45,6 +59,7 @@ export default function Entry({
                     />
                 </button>
                 <button
+                    onMouseEnter={() => playAudio(btnHover)}
                     onClick={handleNoRef}
                     className="w-118 h-42.25 flex items-center justify-center bg-no-repeat bg-contain cursor-pointer transition-scale duration-300 ease-in-out hover:scale-110"
                     style={{ backgroundImage: `url(${rightBtn})` }}

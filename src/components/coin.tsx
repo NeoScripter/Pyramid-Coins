@@ -3,8 +3,14 @@ import { CoinType } from '@/types/coins';
 import goldenCoin from '@/assets/images/pyramid/golden.webp';
 import silverCoin from '@/assets/images/pyramid/silver.webp';
 import bronzeCoin from '@/assets/images/pyramid/bronze.webp';
+import flipSound from '@/assets/sounds/pyramid/flip-sound.wav';
+import bronzeFlying from '@/assets/sounds/pyramid/bronzeFlying.wav';
+import silverFlying from '@/assets/sounds/pyramid/sliverFlying.wav';
+import goldenFlying from '@/assets/sounds/pyramid/goldenFlying.wav';
+
 import { useEffect, useState } from 'react';
 import { cc } from '@/utils/cc';
+import { playAudio } from '@/utils/play-audio';
 
 type CoinProps = {
     value: CoinType;
@@ -59,15 +65,31 @@ export default function Coin({
         }
     };
 
+    const playCoinSound = () => {
+        switch (value) {
+            case 'golden':
+                playAudio(goldenFlying);
+                break;
+            case 'silver':
+                playAudio(silverFlying);
+                break;
+            case 'bronze':
+                playAudio(bronzeFlying);
+                break;
+        }
+    };
+
     function handleClick(e: React.MouseEvent<HTMLDivElement>) {
         if (canAnimate === false) return;
 
         assignCoin();
         setShouldFlip((o) => !o);
+        playAudio(flipSound);
         const rect = (
             e.currentTarget as HTMLDivElement
         ).getBoundingClientRect();
         animateCoinFlight(rect.top + 22, rect.left + 22, assignValue());
+        setTimeout(() => playCoinSound(), 2000)
         blockAnimation();
     }
     return (
