@@ -96,7 +96,7 @@ export default function Coin({
         <div
             onClick={handleClick}
             className={cc(
-                'group perspective size-18 transition-scale duration-250 ease-in',
+                'group size-18 transition-scale duration-250 ease-in',
                 canAnimate &&
                     shouldFlip === false &&
                     shouldAnimate &&
