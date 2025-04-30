@@ -59,7 +59,7 @@ function App() {
             case 'cards':
                 cardsBgAudioRef.current.loop = true;
                 cardsBgAudioRef.current.play();
-                cardsBgAudioRef.current.volume = 0.5;
+                cardsBgAudioRef.current.volume = 0.2;
                 break;
             default:
                 pyramidBgAudioRef.current.loop = true;
