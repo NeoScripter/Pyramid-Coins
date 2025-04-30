@@ -96,7 +96,7 @@ export default function Coin({
         <div
             onClick={handleClick}
             className={cc(
-                'group size-18 transition-scale duration-250 ease-in',
+                'group perspective size-18 transition-scale duration-250 ease-in',
                 canAnimate &&
                     shouldFlip === false &&
                     shouldAnimate &&
@@ -115,7 +115,7 @@ export default function Coin({
                     <img
                         src={assignValue()}
                         alt={`${value} coin`}
-                        className="size-18 object-cover object-center rounded-full"
+                        className="w-full h-full object-cover object-center rounded-full"
                     />
                 </div>
                 {/* Front Face */}
