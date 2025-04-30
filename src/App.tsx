@@ -41,6 +41,12 @@ function App() {
         pyramidBgAudioRef.current.currentTime = 0;
     }
 
+    function playBgMusic() {
+        entryBgAudioRef.current.loop = true;
+        entryBgAudioRef.current.play();
+        entryBgAudioRef.current.volume = 0.5;
+    }
+
     useEffect(() => {
         pauseAllBgMusic();
 
@@ -66,7 +72,7 @@ function App() {
     switch (currentPage) {
         case 'entry':
             return (
-                <div className={cc('overlay', isOpen ? 'open' : 'close')}>
+                <div onClick={() => playBgMusic()} className={cc('overlay', isOpen ? 'open' : 'close')}>
                     <Entry
                         handleNoRefClick={() => setCurrentPage('cards')}
                         handleRefClick={() => setCurrentPage('pyramid')}
