@@ -131,10 +131,10 @@ export default function Cards({
         if (hasWonBefore) {
             setTimeout(() => moveToPyramid(), TRANSITION_DELAY - 4000);
         } else {
-            addWin();
             setTimeout(() => setShowBtnGroup(true), TRANSITION_DELAY - 4000);
         }
     }
+
 
     function reshuffleCards() {
         setShowCards(false);
@@ -146,6 +146,7 @@ export default function Cards({
     }
 
     function handleDouble() {
+        addWin();
         reshuffleCards();
     }
 
@@ -184,7 +185,7 @@ export default function Cards({
                     <div className="basis-72.5">
                         <CardBtns
                             isOpen={showBtnGroup}
-                            handleReset={stopGame}
+                            handleReset={moveToPyramid}
                             handleDouble={handleDouble}
                         />
                     </div>
