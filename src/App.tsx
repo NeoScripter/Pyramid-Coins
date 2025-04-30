@@ -52,27 +52,60 @@ function App() {
 
         switch (currentPage) {
             case 'entry':
-                entryBgAudioRef.current.loop = true;
-                entryBgAudioRef.current.play();
-                entryBgAudioRef.current.volume = 0.5;
+                playAppAudio(entryBgAudioRef.current, 0.5);
                 break;
             case 'cards':
-                cardsBgAudioRef.current.loop = true;
-                cardsBgAudioRef.current.play();
-                cardsBgAudioRef.current.volume = 0.2;
+                playAppAudio(cardsBgAudioRef.current, 0.2);
                 break;
             default:
-                pyramidBgAudioRef.current.loop = true;
-                pyramidBgAudioRef.current.play();
-                pyramidBgAudioRef.current.volume = 0.5;
+                playAppAudio(pyramidBgAudioRef.current, 0.5);
                 break;
         }
     }, [currentPage]);
 
+    useEffect(() => {
+        function handleVisibilityChange() {
+            if (document.hidden) {
+                entryBgAudioRef.current.pause();
+                cardsBgAudioRef.current.pause();
+                pyramidBgAudioRef.current.pause();
+            } else {
+                switch (currentPage) {
+                    case 'entry':
+                        playAppAudio(entryBgAudioRef.current, 0.5);
+                        break;
+                    case 'cards':
+                        playAppAudio(cardsBgAudioRef.current, 0.2);
+                        break;
+                    default:
+                        playAppAudio(pyramidBgAudioRef.current, 0.5);
+                        break;
+                }
+            }
+        }
+
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+        return () => {
+            document.removeEventListener(
+                'visibilitychange',
+                handleVisibilityChange
+            );
+        };
+    }, [currentPage]);
+
+    function playAppAudio(audio: HTMLAudioElement, volume: number) {
+        audio.loop = true;
+        audio.volume = volume;
+        audio.play();
+    }
+
     switch (currentPage) {
         case 'entry':
             return (
-                <div onClick={() => playBgMusic()} className={cc('overlay', isOpen ? 'open' : 'close')}>
+                <div
+                    onClick={() => playBgMusic()}
+                    className={cc('overlay', isOpen ? 'open' : 'close')}
+                >
                     <Entry
                         handleNoRefClick={() => setCurrentPage('cards')}
                         handleRefClick={() => setCurrentPage('pyramid')}
